@@ -71,7 +71,9 @@ public class GamePanel extends JPanel implements ActionListener{
 	
 	public void newApple() {
 		appleX = random.nextInt((int)(SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
-		appleX = random.nextInt((int)(SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+		appleY
+		= random.nextInt((int)(SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+		
 	}
 	public void move() {
 		for(int i = bodyParts;i>0;i--){
@@ -125,10 +127,21 @@ public class GamePanel extends JPanel implements ActionListener{
 			if(y[0] > SCREEN_HEIGHT) {
 				running = false;
 			}
-	
+			if(!running) {
+				timer.stop();
+			}
 	}
 	public void gameOver(Graphics g) {
-		
+		//Pontuacao
+		g.setColor(Color.red);
+		g.setFont(new Font("Ink Free", Font.BOLD, 40));
+		FontMetrics metrics1 = getFontMetrics(g.getFont());
+		g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metrics1.stringWidth("Score: "+applesEaten))/2, g.getFont().getSize());
+		//Mensagem "game over"
+		g.setColor(Color.red);
+		g.setFont(new Font("Ink Free", Font.BOLD, 75));
+		FontMetrics metrics2 = getFontMetrics(g.getFont());
+		g.drawString("Game Over", (SCREEN_WIDTH - metrics2.stringWidth("Game Over")), SCREEN_HEIGHT/2);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -143,6 +156,29 @@ public class GamePanel extends JPanel implements ActionListener{
 	public class MyKeyAdapter extends KeyAdapter{
 		@Override
 		public void keyPressed(KeyEvent e) {
+			switch(e.getKeyCode()) {
+			case KeyEvent.VK_LEFT:
+				if(direction != 'R') {
+					direction = 'L';
+				}
+				break;
+			case KeyEvent.VK_RIGHT:
+				if(direction != 'L') {
+					direction = 'R';
+				}
+				break;
+			case KeyEvent.VK_UP:
+				if(direction != 'D') {
+					direction = 'U';
+				}
+				break;
+			case KeyEvent.VK_DOWN:
+				if(direction != 'U') {
+					direction = 'D';
+				}
+				break;
+							
+			}
 	}
 	
 }
