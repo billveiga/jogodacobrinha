@@ -55,11 +55,17 @@ public class GamePanel extends JPanel implements ActionListener{
 		g.setColor(Color.red);
 		g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
 		
-		for(int i = 0; i< boduParts; i++){
+		for(int i = 0; i< bodyParts; i++){
 			if(i==0){
 				g.setColor(Color.green);
 				g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
 			}
+			else {
+				g.setColor(new Color(45,180,0));
+				g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+			}
+		
+		
 		}
 	}
 	
@@ -89,10 +95,37 @@ public class GamePanel extends JPanel implements ActionListener{
 			
 	}
 	public void checkApple() {
+		if((x[0] == appleX) && (y[0] == appleY )) {
+			bodyParts++;
+			applesEaten++;
+			newApple();
+		}
 		
 	}
 	public void checkCollisions() {
-		
+		//teste de colisao entre cabeca e corpo da cobrinha
+		for(int i = bodyParts;i>0;i--) {
+			if((x[0] == x[i])&& (y[0] == y[i])) {
+				running = false;
+			}
+		}
+		//testa de colisao entre cabeca da cobrinha e borda esquerda
+			if(x[0] < 0) {
+				running = false;
+			}
+		//testa de colisao entre cabeca da cobrinha e borda direita
+			if(x[0] > SCREEN_WIDTH) {
+				running = false;
+			}
+		//testa de colisao entre cabeca da cobrinha e borda de cima
+			if(y[0] < 0) {
+				running = false;
+			}
+		//testa de colisao entre cabeca da cobrinha e borda de baixo
+			if(y[0] > SCREEN_HEIGHT) {
+				running = false;
+			}
+	
 	}
 	public void gameOver(Graphics g) {
 		
@@ -100,6 +133,12 @@ public class GamePanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
+		if (running) {
+			move();
+			checkApple();
+			checkCollisions();
+		}
+		repaint();
 	}
 	public class MyKeyAdapter extends KeyAdapter{
 		@Override
